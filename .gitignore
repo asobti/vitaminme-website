@@ -1,0 +1,17 @@
+.cpanel/
+.htpasswds/
+.mozilla/
+.ssh/
+access-logs/
+etc/
+mail/
+perl5/
+public_ftp/
+tmp/
+www/
+.bash*
+.contactemail
+.dns
+.emacs
+.viminfo
+.zshrc

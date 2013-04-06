@@ -21,15 +21,17 @@ class Recipes_model extends CI_Model {
 	public function getByFilter($params) {
 		$query_terms = array();
 
-		if (isset($params['filter']['ingredients']))
+		if (isset($params['filter']['ingredients'])) {
 			foreach($params['filter']['ingredients'] as $ingredient) {
 				$query_terms[] = $ingredient;
 			}
+		}
 		
-		if (isset($params['filter']['nutrients']))
+		if (isset($params['filter']['nutrients'])) {
 			foreach($params['filter']['nutrients'] as $nutrient) {
-				// $query_terms[] = $this->ingredientsFronNutrient($nutrient);
+				$query_terms[] = $this->ingredientsFromNutrient($nutrient);
 			}
+		}
 
 		$this->payload['q'] = implode(' ', $query_terms);
 		$this->payload['requirePictures'] = 'true';
@@ -56,6 +58,11 @@ class Recipes_model extends CI_Model {
 		} else {
 			return array();
 		}
+	}
+
+	private function ingredientsFromNutrient($nutrient) {
+		// implement
+		return;
 	}
 
 }

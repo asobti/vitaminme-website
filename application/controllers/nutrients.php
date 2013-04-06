@@ -28,11 +28,11 @@ class Nutrients extends MY_Controller {
 		$this->dispatchOutput();
 	}
 
-	public function getAll() {
+	private function getAll() {
 		$this->result['content'] = $this->nutrients_model->getAll($this->params);		
 	}
 
-	public function byId($id) {
+	private function byId($id) {
 		$this->result['content'] = $this->nutrients_model->getById($id, $this->params);
 	}
 

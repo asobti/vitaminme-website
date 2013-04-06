@@ -32,7 +32,7 @@ class Recipes extends MY_Controller {
 		$this->dispatchOutput();
 	}
 
-	public function getByFilter() {
+	private function getByFilter() {
 		$ingredients_set = isset($this->params['filter']['ingredients']) && count($this->params['filter']['ingredients']) > 0;
 		$nutrients_set = isset($this->params['filter']['nutrients']) && count($this->params['filter']['nutrients']) > 0;
 
@@ -44,7 +44,7 @@ class Recipes extends MY_Controller {
 		}
 	}
 
-	public function getById($id) {
+	private function getById($id) {
 		$this->result['content'] = $this->recipes_model->getById($id, $this->params);
 	}
 

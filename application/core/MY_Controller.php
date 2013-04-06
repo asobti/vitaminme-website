@@ -12,10 +12,30 @@ class MY_Controller extends CI_Controller {
 			'content-type' => 'application/json',
 			'content' => array()
 		);
+
+		$this->params = array(
+			'start' => 0,
+			'count' => 20,
+			'filter' => array()
+		);
 	}
 
-	public function is_get() {
-		return $this->request_method() === 'GET';
+	public function parse_query_params() {
+		if ($this->input->get('start')) {
+			$this->params['start'] = (int)$this->input->get('start');
+		}
+
+		if ($this->input->get('count')) {
+			$this->params['count'] = (int)$this->input->get('count');
+		}
+
+		if ($this->input->get('filter')) {
+			$this->params['filter'] = json_decode(urldecode($this->input->get('filter')), TRUE);
+		}
+	}
+
+	public function is_method_allowed() {
+		return in_array($this->request_method(), $this->allowed_methods);
 	}
 
 	public function request_method() {

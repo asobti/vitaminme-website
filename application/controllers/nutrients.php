@@ -5,17 +5,22 @@ class Nutrients extends MY_Controller {
 	public function __construct() {
 		parent::__construct();
 
+		$this->allowed_methods = array('GET');
 		$this->load->model('nutrients_model');
 	}
 
 	public function index($id = NULL)	{
 
-		if ($this->is_get()) {
+		if ($this->is_method_allowed()) {
+
+			$this->parse_query_params();
+
 			if ($id === NULL) {
 				$this->getAll();
 			} else {
 				$this->byId($id);
 			}
+
 		} else {
 			$this->invalidMethod();
 		}
@@ -24,11 +29,11 @@ class Nutrients extends MY_Controller {
 	}
 
 	public function getAll() {
-		$this->result['content'] = $this->nutrients_model->getAll();		
+		$this->result['content'] = $this->nutrients_model->getAll($this->params);		
 	}
 
 	public function byId($id) {
-		$this->result['content'] = $this->nutrients_model->getById($id);
+		$this->result['content'] = $this->nutrients_model->getById($id, $this->params);
 	}
 
 }

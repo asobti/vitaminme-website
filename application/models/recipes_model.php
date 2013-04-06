@@ -16,6 +16,8 @@ class Recipes_model extends CI_Model {
 			'_app_id' => $this->yummly_api_id,
 			'_app_key' => $this->yummly_api_key
 		);
+
+		$this->ing_per_nut = (int)$this->config->item('ingredients_per_nutrient');
 	}
 
 	public function getByFilter($params) {
@@ -29,7 +31,8 @@ class Recipes_model extends CI_Model {
 		
 		if (isset($params['filter']['nutrients'])) {
 			foreach($params['filter']['nutrients'] as $nutrient) {
-				$query_terms[] = $this->ingredientsFromNutrient($nutrient);
+				$ingredients = $this->ingredientsFromNutrient($nutrient['id']);
+				$query_terms[] = $ingredients[0]->desc;
 			}
 		}
 
@@ -41,7 +44,10 @@ class Recipes_model extends CI_Model {
 		$resp = $this->curl->simple_get($url);
 		
 		if ($this->curl->info['http_code'] === 200) {
-			return json_decode($resp, TRUE);
+			$api_response = json_decode($resp);
+			return array(
+				'objects' => $api_response->matches
+			);
 		} else {
 			return array();
 		}
@@ -60,9 +66,23 @@ class Recipes_model extends CI_Model {
 		}
 	}
 
-	private function ingredientsFromNutrient($nutrient) {
-		// implement
-		return;
+	public function ingredientsFromNutrient($nutrient) {
+
+		$query = $this->db
+					  ->select('f.foodcode, f.desc, fnv.nutval')
+					  ->from('mainfooddesc as f')
+					  ->join('fnddsnutval as fnv', 'f.foodcode = fnv.foodcode')
+					  ->join('nutdesc as n', 'fnv.nutrientcode = n.id')
+					  ->where('n.id', $nutrient)
+					  ->order_by('fnv.nutval', 'DESC')
+					  ->limit($this->ing_per_nut, 0)
+					  ->get();
+		
+		if ($query->num_rows() > 0) {
+			return $query->result();
+		} else {
+			return array();
+		}
 	}
 
 }

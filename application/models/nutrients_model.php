@@ -20,7 +20,6 @@ class Nutrients_model extends CI_Model {
 
 		return $this->db->get_where('nutdesc', $where)->row();
 	}
-
 }
 
 /* End of file nutrients_model.php */

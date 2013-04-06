@@ -10,7 +10,8 @@ class MY_Controller extends CI_Controller {
 		$this->result = array(
 			'code' => '200',
 			'content-type' => 'application/json',
-			'content' => array()
+			'content' => array(),
+			'json_encoded' => false
 		);
 
 		$this->params = array(
@@ -54,7 +55,12 @@ class MY_Controller extends CI_Controller {
 
 		$this->output->set_status_header($this->result['code']);
 		$this->output->set_content_type($this->result['content-type']);
-		$this->output->set_output(json_encode($this->result['content']));
+
+		if (!$this->result['json_encoded']) {
+			$this->output->set_output(json_encode($this->result['content']));
+		} else {
+			$this->output->set_output($this->result['content']);
+		}
 	}
 }
 

@@ -22,40 +22,43 @@ class Recipes_model extends CI_Model {
 
 	public function getByFilter($params) {
 		$query_terms = array();
+		$recipes = array();
+		$totalCount = 0;
 
-		if (isset($params['filter']['ingredients'])) {
-			foreach($params['filter']['ingredients'] as $ingredient) {
-				$query_terms[] = $ingredient;
-			}
+		if (isset($params['filter']['nutrients'])) {			
+			$nutrient = $params['filter']['nutrients'][0];
+			$ingredients = $this->ingredientsFromNutrient($nutrient['id']);
+			foreach($ingredients as $in) {
+				$ing_terms = explode(',', $in->desc);
+				$query_terms[] = trim($ing_terms[0]);
+			}			
 		}
 		
-		if (isset($params['filter']['nutrients'])) {
-			foreach($params['filter']['nutrients'] as $nutrient) {
-				$ingredients = $this->ingredientsFromNutrient($nutrient['id']);
-				$query_terms[] = $ingredients[0]->desc;
-			}
-		}
-
-		$this->payload['q'] = implode(' ', $query_terms);
 		$this->payload['requirePictures'] = 'true';
 		$this->payload['start'] = $params['start'];
-		$this->payload['maxResult'] = $params['count'];
+		$this->payload['maxResult'] = floor((int)$params['count'] / count($query_terms));
 		
-		$url = $this->yummly_api_root . 'recipes' . '?' . http_build_query($this->payload);
+		foreach($query_terms as $q) {
+			$this->payload['q'] = $q;
+			$url = $this->yummly_api_root . 'recipes' . '?' . http_build_query($this->payload);
 		
-		$resp = $this->curl->simple_get($url);
+			$resp = $this->curl->simple_get($url);
 		
-		if ($this->curl->info['http_code'] === 200) {
-			$api_response = json_decode($resp);
-			return array(
-				'objects' => $api_response->matches,
-				'total_pages' => ceil($api_response->totalMatchCount / $params['count']),
-				'num_results' => $api_response->totalMatchCount,
-				'page_results' => count($api_response->matches)
-			);
-		} else {
-			return array();
+			if ($this->curl->info['http_code'] === 200) {
+				$api_response = json_decode($resp);
+				$recipes = array_merge($recipes, $api_response->matches);
+				$totalCount += (int)$api_response->totalMatchCount;				
+			} 
 		}
+
+		shuffle($recipes);
+
+		return array(
+			'object' => $recipes,
+			'total_pages' => ceil($totalCount / (int)$params['count']),
+			'num_results' => $totalCount,
+			'pages_results' => count($recipes)
+		);
 	}
 
 	public function getById($id, $params) {		

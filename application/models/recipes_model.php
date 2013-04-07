@@ -54,7 +54,7 @@ class Recipes_model extends CI_Model {
 		shuffle($recipes);
 
 		return array(
-			'object' => $recipes,
+			'objects' => $recipes,
 			'total_pages' => ceil($totalCount / (int)$params['count']),
 			'num_results' => $totalCount,
 			'pages_results' => count($recipes)

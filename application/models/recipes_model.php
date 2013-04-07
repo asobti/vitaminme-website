@@ -38,15 +38,20 @@ class Recipes_model extends CI_Model {
 
 		$this->payload['q'] = implode(' ', $query_terms);
 		$this->payload['requirePictures'] = 'true';
+		$this->payload['start'] = $params['start'];
+		$this->payload['maxResult'] = $params['count'];
 		
 		$url = $this->yummly_api_root . 'recipes' . '?' . http_build_query($this->payload);
-
+		
 		$resp = $this->curl->simple_get($url);
 		
 		if ($this->curl->info['http_code'] === 200) {
 			$api_response = json_decode($resp);
 			return array(
-				'objects' => $api_response->matches
+				'objects' => $api_response->matches,
+				'total_pages' => ceil($api_response->totalMatchCount / $params['count']),
+				'num_results' => $api_response->totalMatchCount,
+				'page_results' => count($api_response->matches)
 			);
 		} else {
 			return array();

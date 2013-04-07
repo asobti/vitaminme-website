@@ -9,7 +9,8 @@ class Nutrients_model extends CI_Model {
 		return array(
 			'objects' => $resultset->result(),
 			'total_pages' => ceil($num_rows / $params['count']),
-			'num_results' => $num_rows
+			'num_results' => $num_rows,
+			'page_results' => $resultset->num_rows()
 		);
 	}
 

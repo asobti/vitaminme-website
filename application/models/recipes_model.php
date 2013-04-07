@@ -24,34 +24,73 @@ class Recipes_model extends CI_Model {
 		$query_terms = array();
 		$recipes = array();
 		$totalCount = 0;
+		$num_nutrients = count($params['filter']['nutrients']);
 
-		if (isset($params['filter']['nutrients'])) {			
-			$nutrient = $params['filter']['nutrients'][0];
-			$ingredients = $this->ingredientsFromNutrient($nutrient['id']);
-			foreach($ingredients as $in) {
-				$ing_terms = explode(',', $in->desc);
-				$query_terms[] = trim($ing_terms[0]);
+		if (isset($params['filter']['nutrients'])) {
+			if ($num_nutrients > 1) {
+				foreach($params['filter']['nutrients'] as $nutrient) {
+					$qt = array();
+
+					$ingredients = $this->ingredientsFromNutrient($nutrient['id']);
+					foreach($ingredients as $in) {
+						$ing_terms = explode(',', $in->desc);
+						$qt[] = trim($ing_terms[0]);
+					}
+
+					$query_terms[] = $qt;
+				}
+			} else {
+				$nutrient = $params['filter']['nutrients'][0];
+				$ingredients = $this->ingredientsFromNutrient($nutrient['id']);
+
+				foreach($ingredients as $i) {
+					$ing_terms = explode(',', $i->desc);
+					$query_terms[] = $ing_terms[0];
+				}
 			}			
 		}
 		
 		$this->payload['requirePictures'] = 'true';
 		$this->payload['start'] = $params['start'];
-		$this->payload['maxResult'] = floor((int)$params['count'] / count($query_terms));
-		
-		foreach($query_terms as $q) {
-			$this->payload['q'] = $q;
-			$url = $this->yummly_api_root . 'recipes' . '?' . http_build_query($this->payload);
-		
-			$resp = $this->curl->simple_get($url);
-		
-			if ($this->curl->info['http_code'] === 200) {
-				$api_response = json_decode($resp);
-				$recipes = array_merge($recipes, $api_response->matches);
-				$totalCount += (int)$api_response->totalMatchCount;				
-			} 
-		}
+		$this->payload['maxResult'] = (count($query_terms) > 0)
+										? floor((int)$params['count'] / count($query_terms))
+										: 0;
 
-		shuffle($recipes);
+
+		if ($this->payload['maxResult'] > 0) {
+
+			if ($num_nutrients > 1)
+				$query_terms = $this->array_transpose($query_terms);
+
+			foreach($query_terms as $q) {
+				$this->payload['q'] = (is_array($q)) ? implode(',',$q) : trim($q);			
+				
+				
+				$url = $this->yummly_api_root . 'recipes' . '?' . http_build_query($this->payload);
+			
+				$resp = $this->curl->simple_get($url);				
+			
+				if ($this->curl->info['http_code'] === 200) {
+					$api_response = json_decode($resp);
+					$recipes = array_merge($recipes, $api_response->matches);
+					$totalCount += (int)$api_response->totalMatchCount;				
+				} 
+			}
+
+			if (count($recipes) === 0 && $num_nutrients > 1) {				
+				// use one or the other recipe
+				// for now, we'll just use the first recipe
+				// unset all after 1
+				$newParams['start'] = (int)$params['start'];
+				$newParams['count'] = (int)$params['count'];
+				
+				$newParams['filter']['nutrients'][0] = $params['filter']['nutrients'][0];
+
+				return $this->getByFilter($newParams);				
+			}
+			shuffle($recipes);
+
+		}
 
 		return array(
 			'objects' => $recipes,
@@ -91,6 +130,11 @@ class Recipes_model extends CI_Model {
 		} else {
 			return array();
 		}
+	}
+
+	private function array_transpose($array) {
+		array_unshift($array, null);
+    	return call_user_func_array('array_map', $array);
 	}
 
 }

@@ -56,6 +56,9 @@ class MY_Controller extends CI_Controller {
 		$this->output->set_status_header($this->result['code']);
 		$this->output->set_content_type($this->result['content-type']);
 
+		// cors
+		$this->output->set_header('Access-Control-Allow-Origin: *');
+
 		if (!$this->result['json_encoded']) {
 			$this->output->set_output(json_encode($this->result['content']));
 		} else {

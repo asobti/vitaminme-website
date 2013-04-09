@@ -74,7 +74,11 @@ class Recipes_model extends CI_Model {
 					$api_response = json_decode($resp);
 					$recipes = array_merge($recipes, $api_response->matches);
 					$totalCount += (int)$api_response->totalMatchCount;				
-				} 
+				} else {
+					return array(
+						'error' => 'Yummly API errored out with HTTP code ' . $this->curl->info['http_code']
+					);
+				}
 			}
 
 			if (count($recipes) === 0 && $num_nutrients > 1) {				

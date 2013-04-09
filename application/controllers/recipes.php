@@ -29,6 +29,10 @@ class Recipes extends MY_Controller {
 			$this->invalidMethod();
 		}
 
+		if (isset($this->result['content']['error'])) {
+			$this->result['code'] = 500;
+		}
+
 		$this->dispatchOutput();
 	}
 

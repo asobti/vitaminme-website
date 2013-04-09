@@ -1,0 +1,119 @@
+body {
+	width: 65%;
+	margin: 0 auto;
+	background-image: url('../img/green.png');
+	background-repeat: repeat;
+	font-family: 'Lato', sans-serif !important;
+}
+.clear {
+	clear: both;
+}
+#header-box {	
+	margin: 0 auto;
+}
+.header-title {
+	display: inline-block;
+}
+.vitaminme-logo {
+	width: 60px;
+	vertical-align: -6px;
+	margin-right: 10px;
+}
+
+#gallery ul {
+	list-style: none;
+	text-align: center;
+	padding: 0;
+	margin: 0;
+}
+#gallery ul li {
+	display: inline;
+}
+#gallery ul img {
+	border: 1px solid #CFD0CB;
+	background-color: #fff;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	box-shadow: 0 6px 6px -5px #727274;
+}
+#gallery img {
+	padding: 4px;
+}
+.ribbon_portfolio {
+	padding-bottom: 10px;
+	border-bottom: 2px solid #333;
+	color: #333;
+	font-family: 'Lato', sans-serif;
+	font-size: 30px;
+	font-weight: bold;
+	/*width: 865px;*/
+}
+.block {
+	margin-top: 20px;
+	background: #eee;
+	padding: 20px;
+	border-radius: 6px;
+}
+.gallery_grid {
+	display: inline;
+	margin-left: 5px;
+	margin-right: 5px;
+}
+div#description {
+	margin-top: 30px;
+}
+div.desc-content,
+div.video {
+	display: inline-block;
+	vertical-align: top;
+	padding-top: 20px;
+}
+div.desc-content {
+	width: 60%;	
+	text-align: justify;
+}
+div.video {
+	width: 35%;
+	padding-left: 20px;
+	text-align: right;
+}
+div.embed {
+	display: inline;
+}
+
+span#coming-soon {
+	font-size: 16px;
+	/*margin-left: 10px;*/
+	margin-bottom: 5px;
+	font-weight: bold;
+}
+p#play-store {
+	margin-top: -20px;
+	/*display: inline-block;*/
+	text-align: center;
+}
+div.framed {
+	text-align: center;
+}
+div.footer {
+	padding: 5px 0;
+}
+div.footer div.inline {
+	display: inline-block;
+	vertical-align: top;
+	width: 49%;
+}
+div#header-box {
+	padding: 25px 60px;
+}
+#footer-logo {
+	width: 16px;
+}
+div.logo-attribute {
+	width: 100%;
+	text-align: right;
+}
+div.logo-attribute img {
+	vertical-align: -1px;
+}

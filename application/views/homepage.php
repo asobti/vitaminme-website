@@ -135,7 +135,7 @@
         <div class="ribbon_portfolio" style="margin-bottom:5px;"></div>        
         <div class="inline">VitaminME, 2013</div>
         <div class="logo-attribute inline">
-          <img src="<?= base_url('assets/img/logo_96.png') ?>" id="footer-logo" />
+          <img src="<?= base_url('assets/img/logo_tiny.png') ?>" id="footer-logo" />
           Logo designed by <a href="http://narainkanv.com" target="_blank">Kanv Narain</a></div>
         <div class="clear"></div>
       </div>

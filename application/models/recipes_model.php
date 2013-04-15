@@ -7,8 +7,13 @@ class Recipes_model extends CI_Model {
 
 		$this->load->config('yummly');
 		$this->yummly_api_root = $this->config->item('yummly_api_root');
-		$this->yummly_api_id = $this->config->item('yummly_app_id');
-		$this->yummly_api_key = $this->config->item('yummly_app_key');
+
+		$keys = $this->config->item('yummly_keys');
+
+		$idx = array_rand($keys);
+
+		$this->yummly_api_id = $keys[$idx]['app_id'];
+		$this->yummly_api_key = $keys[$idx]['app_key'];
 
 		$this->load->library('curl');
 

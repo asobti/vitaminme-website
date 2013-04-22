@@ -37,7 +37,7 @@
         </p>      
       </div>
       <div id="screenshots">
-        <div class="ribbon_portfolio">Screenshots</div>
+        <div class="headings">Screenshots</div>
         <div class="grid_1"><div class="holder"></div></div>
         <div class="gallery_grid"><!-- GALLERY -->
 
@@ -80,7 +80,7 @@
       </div>
 
       <div id="description">
-        <div class="ribbon_portfolio">Description</div>
+        <div class="headings">Description</div>
         <div class="desc-content">
           <p>
             <b>VitaminME</b> is an Android app that allows you to search for food recipes based on your specific nutritional needs. For example, if you want more Vitamin C and Proteins, but less Carbohydrates and Fat, we will give you a list of recipes you can make at home that provides for your needs.
@@ -118,7 +118,77 @@
             <iframe width="260" height="480" src="http://www.youtube.com/embed/6lF9gybq8_I?vq=large" frameborder="0" allowfullscreen></iframe>
           </div>
         </div>
-
+        <div id="news">
+          <div class="headings">
+            We're On The News!</div>
+          <div class="desc-newscontent">
+            <table>
+              <tr>
+                <td>
+                <img class="thumb" src="http://www.drexel.edu/alumni/images/logo_triangle.gif"></td>
+                <td>
+                <a href="http://thetriangle.org/2013/04/19/coders-address-public-health-issues/http://thetriangle.org/2013/04/19/coders-address-public-health-issues" target="_blank">
+                [Drexel Triangle] Coders address public health issues</a><br />
+                The inaugural Philly Health Codefest was hosted April 5-7 by 
+                Drexel University’s College of Information Science and Technology. 
+                The programming event aimed to transform data into health care 
+                solutions.</td>
+              </tr>
+            </table>
+          </div>
+          <div class="desc-newscontent">
+            <table>
+              <tr>
+                <td>
+                <img class="thumb" src="http://medcitynews.com/wp-content/uploads/competition.jpeg"></td>
+                <td>
+                <a href="http://medcitynews.com/2013/04/app-that-identifies-recipes-by-vitamin-content-gaming-dishes-by-taste-and-health-among-codeathon-winners" target="_blank">
+                [MedCity News] App that identifies recipes by vitamin content, gaming dishes 
+                by taste and health among codeathon winners</a><br />
+                Among the winning entries at a recent health codeathon at Drexel 
+                University were ones that focused on obesity like a mobile health 
+                app that produces recipes based on vitamins users want.</td>
+              </tr>
+            </table>
+          </div>
+          <div class="desc-newscontent">
+            <table>
+              <tr>
+                <td>
+                <img class="thumb" src="http://technical.ly/philly/wp-content/uploads/sites/2/2013/04/codefest.jpg"></td>
+                <td>
+                <a href="http://technical.ly/philly/2013/04/10/healthify-me-wins-5k-grand-prize-at-philly-health-codefest" target="_blank">
+                [Technical.ly Philly] Healthify.me wins $5K grand prize at Philly Health Codefest</a><br />
+                Nine teams participated in the healthcare-focused hackathon 
+                hosted by Drexel University’s i-School and Nvigor, said Drexel 
+                science writer Kerry Boland, and four of them were made up of 
+                students, as Chief Data Officer Mark Headd noted.</td>
+              </tr>
+            </table>
+          </div>
+          <div class="desc-newscontent">
+            <table>
+              <tr>
+                <td>
+                <img class="thumb" src="http://www.cis.drexel.edu/faculty/thu/DrexelLogo.jpg"></td>
+                <td>
+                <a href="http://www.ischool.drexel.edu/home/about/press/article/?articleid=1792" target="_blank">
+                [Drexel iSchool] Nutrition Apps Earn Top Prizes at Inaugural Philly Health Codefest 
+                at Drexel University</a><br />
+                Last weekend, Drexel University’s The iSchool, College of Information 
+                Science and Technology hosted its premier Philly Health Codefest, 
+                a two-day coding competition to transform data into real-world 
+                health care solutions. Nine teams of software developers and 
+                designers, health care professionals, educators, students and 
+                entrepreneurs attended the event, which took place in the Bossone 
+                Research Enterprise Center’s Mitchell Auditorium on April 5-7.</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="headings" style="margin-top: 30px; margin-bottom: 5px;">
+          Coming Soon... 
+        </div>
         <div class="framed">
           <img src="<?= base_url('assets/screenshots/framed/000.png') ?>" />        
           <img src="<?= base_url('assets/screenshots/framed/001.png') ?>" />        
@@ -132,7 +202,7 @@
         </p>
       </div>
       <div class="footer">
-        <div class="ribbon_portfolio" style="margin-bottom:5px;"></div>        
+        <div class="headings" style="margin-bottom:5px;"></div>        
         <div class="inline">VitaminME, 2013</div>
         <div class="logo-attribute inline">
           <img src="<?= base_url('assets/img/logo_tiny.png') ?>" id="footer-logo" />

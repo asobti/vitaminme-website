@@ -66,6 +66,14 @@ class Metadata_model extends CI_Model {
 		return $this->fetch($url);
 	}
 
+	public function fetchAllergies() {
+		$url = $this->yummly_api_root . 'metadata/allergy'
+				. '?'
+				. http_build_query($this->payload);
+
+		return $this->fetch($url);	
+	}
+
 	private function fetch($url) {
 		$resp = $this->curl->simple_get($url);
 

@@ -21,6 +21,10 @@ class Admintools extends CI_Controller {
 			case 'INGREDIENT'  :
 				$this->updateIngredients();
 				break;
+			case 'ALLERGIES' :
+			case 'ALLERGY' :
+				$this->updateAllergies();
+				break;
 			default :
 				echo 'Unrecognized argument' . PHP_EOL;
 		}
@@ -37,6 +41,21 @@ class Admintools extends CI_Controller {
 			echo "Ingredients updated. Found {$count} entries." . PHP_EOL;
 		} catch (Exception $e) {
 			echo 'Failed updating ingredients';
+			echo $e;
+		}
+	}
+
+	private function updateAllergies() {
+		try {
+			$allergies = $this->metadata_model->fetchAllergies();
+			$count = count($allergies);
+
+			$this->metadata_model->truncate('allergies');
+			$this->metadata_model->insert($allergies, 'allergies');
+
+			echo "Allergies updated. Found {$count} entries." . PHP_EOL;
+		} catch (Exception $e) {
+			echo 'Failed updating allergies' . PHP_EOL;
 			echo $e;
 		}
 	}

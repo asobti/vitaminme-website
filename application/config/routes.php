@@ -43,6 +43,7 @@ $route['404_override'] = '';
 
 $route['nutrients/(:num)'] = 'nutrients/index/$1';
 $route['ingredients/(:num)'] = 'ingredients/index/$1';
+$route['allergies/(:num)'] = 'allergies/index/$1';
 
 $route['recipes/(:any)'] = 'recipes/index/$1';
 

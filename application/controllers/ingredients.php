@@ -25,7 +25,8 @@ class Ingredients extends MY_Controller {
 			$this->invalidMethod();
 		}
 
-		if (isset($this->result['content']['error'])) {
+		if (   is_array($this->result['content'])
+			&& isset($this->result['content']['error'])) {
 			$this->result['code'] = 500;
 		}
 

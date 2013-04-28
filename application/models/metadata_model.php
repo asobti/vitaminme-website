@@ -23,6 +23,33 @@ class Metadata_model extends CI_Model {
 		);
 	}
 
+	public function getAll($tbl, $params) {
+		$query = $this->db->limit($params['count'], $params['start'])
+						  ->where($params['filter'])
+						  ->get($tbl);
+
+		$num_rows = $this->db->select('count(*) as count')
+							->where($params['filter'])
+							->get($tbl)
+							->row()
+							->count;
+
+		return array(
+			'objects' => $query->result(),
+			'total_pages' => ceil($num_rows / $params['count']),
+			'num_results' => $num_rows,
+			'page_results' => $query->num_rows()
+		);
+	}
+
+	public function getById($tbl, $id) {
+		$where = array(
+			'id' => $id
+		);
+
+		return $this->db->get_where($tbl, $where)->row();
+	}
+
 	public function truncate($tbl) {
 		$this->db->empty_table($tbl);
 	}

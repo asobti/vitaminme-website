@@ -42,6 +42,8 @@ $route['default_controller'] = "welcome";
 $route['404_override'] = '';
 
 $route['nutrients/(:num)'] = 'nutrients/index/$1';
+$route['ingredients/(:num)'] = 'ingredients/index/$1';
+
 $route['recipes/(:any)'] = 'recipes/index/$1';
 
 

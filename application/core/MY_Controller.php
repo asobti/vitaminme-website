@@ -35,7 +35,7 @@ class MY_Controller extends CI_Controller {
 			'like' => array()
 		);
 		if ($this->input->get('filter')) {			
-			$this->buildFilters($this->input->get('filter'));
+			$this->buildFilters(urldecode($this->input->get('filter')));
 		}
 	}
 
@@ -51,7 +51,7 @@ class MY_Controller extends CI_Controller {
 			} else if ($f->op === 'like') {
 				$this->params['filter']['like'][$f->name] = $f->val;
 			} // else just ignore
-		}
+		}		
 	}
 
 	public function is_method_allowed() {

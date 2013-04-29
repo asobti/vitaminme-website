@@ -1,17 +1,9 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Nutrients_model extends CI_Model {
+class Nutrients_model extends MY_Model {
 
 	public function getAll($params) {		
-		$resultset = $this->db->limit($params['count'], $params['start'])->where($params['filter'])->get('nutdesc');
-		$num_rows = $this->db->select('count(*) as count')->where($params['filter'])->get('nutdesc')->row()->count;
-
-		return array(
-			'objects' => $resultset->result(),
-			'total_pages' => ceil($num_rows / $params['count']),
-			'num_results' => $num_rows,
-			'page_results' => $resultset->num_rows()
-		);
+		return $this->execQuery('nutdesc', $params);
 	}
 
 	public function getById($id, $params) {

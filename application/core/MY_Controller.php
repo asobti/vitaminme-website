@@ -30,9 +30,28 @@ class MY_Controller extends CI_Controller {
 			$this->params['count'] = (int)$this->input->get('count');
 		}
 
-		if ($this->input->get('filter')) {
-			$this->params['filter'] = json_decode(urldecode($this->input->get('filter')), TRUE);
+		$this->params['filter'] = array(
+			'where' => array(),
+			'like' => array()
+		);
+		if ($this->input->get('filter')) {			
+			$this->buildFilters(urldecode($this->input->get('filter')));
 		}
+	}
+
+	private function buildFilters($queryString) {
+		$filters = json_decode($queryString);
+
+		$this->params['filter']['where'] = array();
+		$this->params['filter']['like'] = array();
+
+		foreach($filters as $f) {
+			if ($f->op === 'eq') {
+				$this->params['filter']['where'][$f->name] = $f->val;
+			} else if ($f->op === 'like') {
+				$this->params['filter']['like'][$f->name] = $f->val;
+			} // else just ignore
+		}		
 	}
 
 	public function is_method_allowed() {

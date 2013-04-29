@@ -13,8 +13,10 @@ class Diets extends MY_Controller {
 
 	public function index($id = null) {
 		if ($this->is_method_allowed()) {
-			$this->parse_query_params();
 
+			$this->parse_query_params();
+			$this->parse_query_filters();
+			
 			if ($id === NULL) {
 				$this->result['content'] = $this->metadata_model->getAll($this->tbl, $this->params);
 			} else {

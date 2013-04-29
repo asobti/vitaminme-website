@@ -14,6 +14,7 @@ class Recipes extends MY_Controller {
 		if ($this->is_method_allowed()) {
 
 			$this->parse_query_params();
+			$this->params['filter'] = json_decode(urldecode($this->input->get('filter')), true);
 
 			if ($id === NULL && !empty($this->params['filter'])) {
 				$this->getByFilter();

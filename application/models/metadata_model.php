@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Metadata_model extends CI_Model {
+class Metadata_model extends MY_Model {
 
 	public function __construct() {
 		parent::__construct();
@@ -24,22 +24,7 @@ class Metadata_model extends CI_Model {
 	}
 
 	public function getAll($tbl, $params) {
-		$query = $this->db->limit($params['count'], $params['start'])
-						  ->where($params['filter'])
-						  ->get($tbl);
-
-		$num_rows = $this->db->select('count(*) as count')
-							->where($params['filter'])
-							->get($tbl)
-							->row()
-							->count;
-
-		return array(
-			'objects' => $query->result(),
-			'total_pages' => ceil($num_rows / $params['count']),
-			'num_results' => $num_rows,
-			'page_results' => $query->num_rows()
-		);
+		return $this->execQuery($tbl, $params);
 	}
 
 	public function getById($tbl, $id) {

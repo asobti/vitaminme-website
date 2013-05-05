@@ -3,7 +3,7 @@
 class Nutrients_model extends MY_Model {
 
 	public function getAll($params) {		
-		return $this->execQuery('nutdesc', $params);
+		return $this->execQuery('nutrients', $params);
 	}
 
 	public function getById($id, $params) {
@@ -11,7 +11,7 @@ class Nutrients_model extends MY_Model {
 			'id' => $id
 		);
 
-		return $this->db->get_where('nutdesc', $where)->row();
+		return $this->db->get_where('nutrients', $where)->row();
 	}
 }
 

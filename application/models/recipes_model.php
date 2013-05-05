@@ -109,7 +109,59 @@ class Recipes_model extends MY_Model {
 		);
 	}
 
-	public function getById($id, $params) {		
+	public function query($pagParams, $params) {
+		$this->buildQueryPayload($pagParams, $params);
+		$url = $this->yummly_api_root . 'recipes' . '?' . $this->buildQueryPayload($pagParams, $params); //http_build_query($this->payload);
+		die($url);
+		$resp = $this->curl->simple_get($url);
+
+		if ($this->curl->info['http_code'] === 200) {
+			$resp = json_decode($resp);
+			$page_results = count($resp->matches);
+
+			if ($page_results > 0) {
+				// convert to our response format
+				$formattedResponse = array(
+					'objects' => $resp->matches,
+					'total_pages' => ceil((int)$resp->totalMatchCount / $page_results),
+					'num_results' => (int)$resp->totalMatchCount,
+					'page_results' => $page_results
+				);
+
+				return $formattedResponse;
+			} else {
+				return array();
+			}
+		} else {			
+			return array();
+		}
+	}
+
+	private function buildQueryPayload($pagParams, $params) {
+		$queryString = '';
+		// require pictures
+		$this->payload['requirePictures'] = 'true';
+
+		// pagination info
+		$this->payload['maxResult'] = $pagParams['count'];
+		$this->payload['start'] = $pagParams['start'];
+
+		$queryString = http_build_query($this->payload);
+
+		foreach($params as $k=>$v) {
+			if (is_array($params[$k])) {
+				foreach($params[$k] as $p) {
+					$queryString = $queryString . "&" . $k . "[]=" . $p;
+				}
+			} else {
+				$queryString = $queryString . "&" . $k . "=" . $v;
+			}
+		}
+
+		return $queryString;
+	}
+
+	public function getById($id) {		
 
 		$url = $this->yummly_api_root . 'recipe/' . $id . '?' . http_build_query($this->payload);		
 		

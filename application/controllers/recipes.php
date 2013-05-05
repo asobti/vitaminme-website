@@ -10,22 +10,15 @@ class Recipes extends MY_Controller {
 		$this->load->model('recipes_model');		
 	}
 
-	public function index($id = NULL)	{
+	public function index($id = NULL) {
 		if ($this->is_method_allowed()) {
-
 			$this->parse_query_params();
-			$this->params['filter'] = json_decode(urldecode($this->input->get('filter')), true);
 
-			if ($id === NULL && !empty($this->params['filter'])) {
-				$this->getByFilter();
-			} else if ($id !== NULL) {
-				$this->getById($id);
+			if ($id === NULL) {
+				$this->queryRecipes();
 			} else {
-				// bad request
-				$this->result['code'] = 400;
-				$this->result['content']['error'] = 'You must specify a filter';
+				$this->getById($id);
 			}
-
 		} else {
 			$this->invalidMethod();
 		}
@@ -37,20 +30,13 @@ class Recipes extends MY_Controller {
 		$this->dispatchOutput();
 	}
 
-	private function getByFilter() {
-		$ingredients_set = isset($this->params['filter']['ingredients']) && count($this->params['filter']['ingredients']) > 0;
-		$nutrients_set = isset($this->params['filter']['nutrients']) && count($this->params['filter']['nutrients']) > 0;
-
-		if ($ingredients_set || $nutrients_set) {
-			$this->result['content'] = $this->recipes_model->getByFilter($this->params);
-		} else {
-			$this->result['code'] = 400;
-			$this->result['content']['error'] = "Invalid filter set";
-		}
+	private function getById($id) {
+		$this->result['content'] = $this->recipes_model->getById($id);
 	}
 
-	private function getById($id) {
-		$this->result['content'] = $this->recipes_model->getById($id, $this->params);
+	private function queryRecipes() {
+		// pass all GET params				
+		$this->result['content'] = $this->recipes_model->query($this->params, $this->input->get());
 	}
 
 }

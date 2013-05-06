@@ -24,12 +24,10 @@ class MY_Controller extends CI_Controller {
 	public function parse_query_params() {
 		if ($this->input->get('start')) {
 			$this->params['start'] = (int)$this->input->get('start');
-			unset($_GET['start']);
 		}
 
 		if ($this->input->get('count')) {
 			$this->params['count'] = (int)$this->input->get('count');
-			unset($_GET['count']);
 		}		
 	}
 

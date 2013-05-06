@@ -23,7 +23,7 @@ class Recipes_model extends MY_Model {
 		);	
 	}
 
-	public function query($pagParams, $params) {
+	public function query($pagParams, $params) {		
 		$this->buildQueryPayload($pagParams, $params);
 		$url = $this->yummly_api_root . 'recipes' . '?' . $this->buildQueryPayload($pagParams, $params); //http_build_query($this->payload);
 		
@@ -75,6 +75,19 @@ class Recipes_model extends MY_Model {
 
 		$queryString = http_build_query($this->payload);
 
+		// nutrition info
+		if (isset($params['nutrient'])) {
+			foreach($params['nutrient'] as $k=>$v) {
+				if (strtoupper($v) === 'HIGH') {
+					$queryString = $queryString . sprintf("&nutrition.%s.min=%d", $k, $this->nutrientDailyValue($k));
+				}  else if (strtoupper($v) === 'LOW') {
+					$queryString = $queryString . sprintf("&nutrition.%s.max=0", $k);
+				}
+			}
+
+			unset($params['nutrient']);
+		}
+
 		foreach($params as $k=>$v) {
 			if (is_array($params[$k])) {
 				foreach($params[$k] as $p) {
@@ -86,7 +99,16 @@ class Recipes_model extends MY_Model {
 		}
 
 		return $queryString;
-	}	
+	}
+
+	private function nutrientDailyValue($nut) {
+		return (int)$this->db
+						->select('daily_value')
+						->where('tagname', $nut)
+						->get('nutrients')
+						->row()
+						->daily_value;
+	}
 }
 
 /* End of file recipes_model.php */

@@ -35,8 +35,13 @@ class Recipes extends MY_Controller {
 	}
 
 	private function queryRecipes() {
+		$otherParams = $this->input->get();
+
+		// remove pagination info
+		if (isset($otherParams['start'])) unset($otherParams['start']);
+		if (isset($otherParams['count'])) unset($otherParams['count']);
 		// pass all GET params				
-		$this->result['content'] = $this->recipes_model->query($this->params, $this->input->get());
+		$this->result['content'] = $this->recipes_model->query($this->params, $otherParams);
 	}
 
 }

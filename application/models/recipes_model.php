@@ -88,13 +88,15 @@ class Recipes_model extends MY_Model {
 			unset($params['nutrient']);
 		}
 
-		foreach($params as $k=>$v) {
-			if (is_array($params[$k])) {
-				foreach($params[$k] as $p) {
-					$queryString = $queryString . "&" . $k . "[]=" . $p;
+		if (isset($params) && !empty($params)) {			
+			foreach($params as $k=>$v) {
+				if (is_array($params[$k])) {
+					foreach($params[$k] as $p) {
+						$queryString = $queryString . "&" . $k . "[]=" . $p;
+					}
+				} else {
+					$queryString = $queryString . "&" . $k . "=" . $v;
 				}
-			} else {
-				$queryString = $queryString . "&" . $k . "=" . $v;
 			}
 		}
 

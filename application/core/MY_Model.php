@@ -31,8 +31,8 @@ class MY_Model extends CI_Model {
 		return array(
 			'objects' => $query->result(),
 			'total_pages' => ceil($num_rows / $params['count']),
-			'num_results' => $num_rows,
-			'page_results' => $query->num_rows()
+			'num_results' => (int)$num_rows,
+			'page_results' => (int)$query->num_rows()
 		);
 	}
 

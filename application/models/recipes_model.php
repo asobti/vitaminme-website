@@ -24,7 +24,6 @@ class Recipes_model extends MY_Model {
 	}
 
 	public function query($pagParams, $params) {		
-		$this->buildQueryPayload($pagParams, $params);
 		$url = $this->yummly_api_root . 'recipes' . '?' . $this->buildQueryPayload($pagParams, $params); //http_build_query($this->payload);
 		
 		$resp = $this->curl->simple_get($url);
@@ -64,7 +63,7 @@ class Recipes_model extends MY_Model {
 		}
 	}
 
-	private function buildQueryPayload($pagParams, $params) {
+	private function buildQueryPayload($pagParams, $params) {		
 		$queryString = '';
 		// require pictures
 		$this->payload['requirePictures'] = 'true';
@@ -76,8 +75,12 @@ class Recipes_model extends MY_Model {
 		$queryString = http_build_query($this->payload);
 
 		// nutrition info
-		if (isset($params['nutrient'])) {
-			foreach($params['nutrient'] as $k=>$v) {
+		if (isset($params['nutrient']) && !empty($params['nutrient'])) {
+			$nutrients = gettype($params['nutrient']) === 'string'
+						? json_decode($params['nutrient'])
+						: $params['nutrient'];
+
+			foreach($nutrients as $k=>$v) {				
 				if (strtoupper($v) === 'HIGH') {
 					$queryString = $queryString . sprintf("&nutrition.%s.min=%d", $k, $this->nutrientDailyValue($k));
 				}  else if (strtoupper($v) === 'LOW') {
@@ -101,6 +104,7 @@ class Recipes_model extends MY_Model {
 		}
 
 		return $queryString;
+
 	}
 
 	private function nutrientDailyValue($nut) {

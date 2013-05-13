@@ -67,6 +67,14 @@ class Metadata_model extends MY_Model {
 		return $this->fetch($url);	
 	}
 
+	public function fetchCourses() {
+		$url = $this->yummly_api_root . 'metadata/course'
+				. '?'
+				. http_build_query($this->payload);
+
+		return $this->fetch($url);
+	}
+
 	private function fetch($url) {
 		$resp = $this->curl->simple_get($url);
 

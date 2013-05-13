@@ -29,6 +29,10 @@ class Admintools extends CI_Controller {
 			case 'DIET' :
 				$this->updateDiets();
 				break;
+			case 'COURSES' :
+			case 'COURSE' :
+				$this->updateCourses();
+				break;
 			default :
 				echo 'Unrecognized argument' . PHP_EOL;
 		}
@@ -75,6 +79,21 @@ class Admintools extends CI_Controller {
 			echo "Diets updated. Found {$count} entries." . PHP_EOL;
 		} catch (Exception $e) {
 			echo 'Failed updating diets' . PHP_EOL;
+			echo $e;
+		}
+	}
+
+	private function updateCourses() {
+		try {
+			$courses = $this->metadata_model->fetchCourses();
+			$count = count($courses);
+
+			$this->metadata_model->truncate('courses');
+			$this->metadata_model->insert($courses, 'courses');
+
+			echo "Courses updated. Found {$count} entries." . PHP_EOL;
+		} catch (Exception $e) {
+			echo 'Failed updating courses' . PHP_EOL;
 			echo $e;
 		}
 	}
